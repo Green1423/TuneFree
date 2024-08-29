@@ -10,10 +10,10 @@
       :allow-input="noSideSpace"
       round
       clearable
-      @focus="searchInputToFocus"
+      @focus="searchInputToFocus($event)"
       @keyup.enter="toSearch(searchInputValue)"
       @click.stop
-      @click.right="searchDropdownRef?.openDropdown($event)"
+      @contextmenu="searchDropdownRef?.openDropdown($event)"
     >
       <template #prefix>
         <n-icon>

@@ -26,6 +26,7 @@
       <n-tab name="setTab4"> 歌词 </n-tab>
       <n-tab name="setTab5"> 下载 </n-tab>
       <n-tab name="setTab6"> 其他 </n-tab>
+      <n-tab name="setTab7"> 插件 </n-tab>
     </n-tabs>
     <!-- 设置项 -->
     <n-scrollbar
@@ -519,7 +520,7 @@
                 清除
               </n-button>
             </Transition>
-            <n-button :disabled="!checkPlatform.electron()" strong secondary @click="choosePath">
+            <n-button :disabled="!checkPlatform.electron()" strong secondary @click="choosePathDownload">
               更改
             </n-button>
           </n-flex>
@@ -588,6 +589,46 @@
           <n-button strong secondary type="error" @click="resetApp"> 重置 </n-button>
         </n-card>
       </div>
+      <div class="set-type">
+        <n-h3 prefix="bar"> 插件 </n-h3>
+        <n-card class="set-item">
+          <div class="name">
+            加载插件
+            <n-text class="tip">为TuneFree注入开源力量！</n-text>
+          </div>
+          <n-switch v-model:value="loadPlugins" :round="false" @change="loadPluginsChange = !loadPluginsChange" />
+        </n-card>
+        <n-card v-if="loadPluginsChange" class="set-item">
+          <div class="name">
+            重启以应用更改
+          </div>
+          <n-button strong secondary @click="reload">
+            重启
+          </n-button>
+        </n-card>
+        <n-card class="set-item">
+          <div class="name">
+            默认下载文件夹
+            <n-text class="tip">{{ pluginsPath || "不设置则会每次选择保存位置" }}</n-text>
+          </div>
+          <n-flex>
+            <Transition name="fade" mode="out-in">
+              <n-button
+                v-if="pluginsPath"
+                type="error"
+                strong
+                secondary
+                @click="pluginsPath = null"
+              >
+                清除
+              </n-button>
+            </Transition>
+            <n-button :disabled="!checkPlatform.electron()" strong secondary @click="choosePathPlugins">
+              更改
+            </n-button>
+          </n-flex>
+        </n-card>
+      </div>
     </n-scrollbar>
   </div>
 </template>
@@ -645,6 +686,8 @@ const {
   downloadMeta,
   downloadCover,
   downloadLyrics,
+  pluginsPath,
+  loadPlugins,
 } = storeToRefs(settings);
 
 
@@ -652,6 +695,8 @@ const {
 const setTabsRef = ref(null);
 const setScrollRef = ref(null);
 const setTabsValue = ref("setTab1");
+
+const loadPluginsChange = ref(false);
 
 //更新
 const isNewVersion = (currentVersion, newVersion) => {
@@ -716,7 +761,7 @@ const songLevelData = {
     tip: "环绕声体验，声音听感增强，96kHz/24bit",
     value: "hires",
   },
-  jymaster: { 
+  jymaster: {
     label: "超清母带 Master",
     tip: "还原音频细节，192kHz/24bit",
     value: "jymaster",
@@ -759,9 +804,24 @@ const closeTaskbarProgress = (val) => {
 };
 
 // 更改下载目录
-const choosePath = async () => {
+const choosePathDownload = async () => {
   const selectedDir = await electron.ipcRenderer.invoke("selectDir", true);
   if (selectedDir) downloadPath.value = selectedDir;
+};
+
+const choosePathPlugins = async () => {
+  const selectedDir = await electron.ipcRenderer.invoke("selectDir", true);
+  if (selectedDir) pluginsPath.value = selectedDir;
+};
+
+const reload = async () => {
+  setTimeout(() => {
+    if (checkPlatform.electron()) {
+      electron.ipcRenderer.send("window-relaunch");
+    } else {
+      window.location.href = "/";
+    }
+  }, 1000);
 };
 
 // 跳转

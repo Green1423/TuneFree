@@ -285,23 +285,23 @@ const routes = [
     },
     component: () => import("@/views/Dj/index.vue"),
   },
-    // 赞助者
-    {
-      path: "/Sponsors",
-      name: "Sponsors",
-      meta: {
-        title: "赞赏列表",
-      },
-      component: () => import("@/views/Sponsors/index.vue"),
+  // 赞助者
+  {
+    path: "/Sponsors",
+    name: "Sponsors",
+    meta: {
+      title: "赞赏列表",
     },
-      // 首页
+    component: () => import("@/views/Sponsors/index.vue"),
+  },
+  // 首页
   {
     path: "/lyric",
     name: "lyric",
-    meta: { 
+    meta: {
       title: "桌面歌词",
     },
-    component: () => import("@/views/DesktopLyric.vue")
+    component: () => import("@/views/DesktopLyric.vue"),
   },
   // 播客 -分类
   {
@@ -326,7 +326,7 @@ const routes = [
     path: "/song",
     name: "song",
     meta: {
-      title: "全局设置",
+      title: "单曲页面",
     },
     component: () => import("@/views/Song.vue"),
   },

@@ -53,6 +53,8 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       downloadLyrics: true, // 同时下载歌词
       downloadLyricsToFile: true,
       downloadCoverToFile: true,
+      loadPlugins: true,
+      pluginsPath: null,
     };
   },
   getters: {},
