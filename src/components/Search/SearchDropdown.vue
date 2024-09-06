@@ -77,6 +77,7 @@ const openDropdown = (e) => {
           props: {
             onClick: () => {
               input(clipboard);
+              $message.success("粘贴成功");
             },
           },
           icon: renderIcon("content-copy", 20),
@@ -88,6 +89,7 @@ const openDropdown = (e) => {
             onClick: () => {
               input(clipboard);
               toSearch(clipboard);
+              $message.success("粘贴成功");
             },
           },
           icon: renderIcon("search-rounded", 20),

@@ -3,12 +3,12 @@ import { app, protocol, shell, screen, BrowserWindow, globalShortcut, nativeImag
 import { platform, optimizer, is } from "@electron-toolkit/utils";
 import { startNcmServer } from "@main/startNcmServer";
 import { startMainServer } from "@main/startMainServer";
-import { configureAutoUpdater } from "@main/utils/checkUpdates";
 import createSystemTray from "@main/utils/createSystemTray";
 import createGlobalShortcut from "@main/utils/createGlobalShortcut";
 import mainIpcMain from "@main/mainIpcMain";
 import Store from "electron-store";
 import log from "electron-log";
+import DownloadManager from "@main/downloadManager";
 
 // 屏蔽报错
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = "true";
@@ -158,15 +158,14 @@ class MainProcess {
     }
   }
 
-  showLyricWin(){
+  showLyricWin() {
     if (this.lyricWindow) {
       this.lyricWindow.show();
       //this.lyricWindow.setPosition(
       //)
       if (this.lyricWindow.isMinimized()) this.lyricWindow.restore();
       this.lyricWindow.focus();
-    }
-    else{
+    } else {
       this.lyricWindow = new BrowserWindow({
         width: 1200,
         height: 100,
@@ -175,7 +174,7 @@ class MainProcess {
         skipTaskbar: true,
         x: screen.getPrimaryDisplay().workAreaSize.width / 2 - 600,
         y: screen.getPrimaryDisplay().workAreaSize.height - 200,
-        webPreferences:{
+        webPreferences: {
           // devTools: is.dev,
           devTools: true,
           preload: join(__dirname, "../preload/index.mjs"),
@@ -183,81 +182,85 @@ class MainProcess {
           webSecurity: false,
           hardwareAcceleration: true,
         },
-        frame:false
-      })
-      this.lyricWindow.setAlwaysOnTop(true, 'screen-saver')
-      
+        frame: false,
+      });
+      this.lyricWindow.setAlwaysOnTop(true, "screen-saver");
+
       // 渲染路径
       // 在开发模式
       if (is.dev && process.env.ELECTRON_RENDERER_URL) {
-        this.lyricWindow.loadURL(process.env.ELECTRON_RENDERER_URL + '/#/lyric');
+        this.lyricWindow.loadURL(process.env.ELECTRON_RENDERER_URL + "/#/lyric");
       }
       // 生产模式
       else {
-        this.lyricWindow.loadURL(`http://127.0.0.1:${import.meta.env.MAIN_VITE_MAIN_PORT ?? 7899}/#/lyric`);
+        this.lyricWindow.loadURL(
+          `http://127.0.0.1:${import.meta.env.MAIN_VITE_MAIN_PORT ?? 7899}/#/lyric`,
+        );
       }
-      this.showLyricWin()
+      this.showLyricWin();
     }
   }
 
-  hideLyricWin(){
+  hideLyricWin() {
     if (this.lyricWindow) {
       this.lyricWindow.destroy();
-      this.lyricWindow = null
+      this.lyricWindow = null;
     }
   }
 
-  lyricDragMoving(ev, params){
-    if(!this.lyricWindow) return
-    const param = JSON.parse(params)
-    this.lyricWindow.setPosition(param.x, param.y, true)
+  lyricDragMoving(ev, params) {
+    if (!this.lyricWindow) return;
+    const param = JSON.parse(params);
+    this.lyricWindow.setPosition(param.x, param.y, true);
   }
 
-  lyricDragStart(ev){
-    if(!this.lyricWindow) return
-    const winPos = this.lyricWindow.getPosition()
-    const cursorPos = screen.getCursorScreenPoint()
-    let x = cursorPos.x - winPos[0]
-    let y = cursorPos.y - winPos[1]
-    ev.returnValue = JSON.stringify({x,y})
-
-  }
-  lyricLock(){
-    if(!this.lyricWindow) return
-    this.lyricWindow.setIgnoreMouseEvents(true, {forward: true})
+  lyricDragStart(ev) {
+    if (!this.lyricWindow) return;
+    const winPos = this.lyricWindow.getPosition();
+    const cursorPos = screen.getCursorScreenPoint();
+    let x = cursorPos.x - winPos[0];
+    let y = cursorPos.y - winPos[1];
+    ev.returnValue = JSON.stringify({ x, y });
   }
 
-  lyricUnlock(){
-    if(!this.lyricWindow) return
-    this.lyricWindow.setIgnoreMouseEvents(false)
+  lyricLock() {
+    if (!this.lyricWindow) return;
+    this.lyricWindow.setIgnoreMouseEvents(true, { forward: true });
   }
+
+  lyricUnlock() {
+    if (!this.lyricWindow) return;
+    this.lyricWindow.setIgnoreMouseEvents(false);
+  }
+
   // 主应用程序事件
   mainAppEvents() {
     app.whenReady().then(async () => {
       // 创建主窗口
       this.createWindow();
+      this.downloadManager = new DownloadManager(app.getPath("exe"));
       // 检测更新
       //configureAutoUpdater(); 检查更新禁用
       // 引入主 Ipc
       mainIpcMain(this.mainWindow, {
         showLyricWin: () => {
-          this.showLyricWin()
+          this.showLyricWin();
         },
         hideLyricWin: () => {
-          this.hideLyricWin()
+          this.hideLyricWin();
         },
-        lyricDragStart:(ev) => {
-          this.lyricDragStart(ev)
+        lyricDragStart: (ev) => {
+          this.lyricDragStart(ev);
         },
-        lyricDragMoving:(ev,params) => {
-          this.lyricDragMoving(ev, params)
+        lyricDragMoving: (ev, params) => {
+          this.lyricDragMoving(ev, params);
         },
-        lyricLock:(ev) => {
-          this.lyricLock()
+        lyricLock: (ev) => {
+          this.lyricLock();
         },
-        lyricUnlock:(ev) => {
-          this.lyricUnlock()
-        }
+        lyricUnlock: (ev) => {
+          this.lyricUnlock();
+        },
       });
       // 系统托盘
       createSystemTray(this.mainWindow);

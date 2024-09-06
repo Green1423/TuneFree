@@ -20,12 +20,13 @@
       type="segment"
       @update:value="settingTabChange"
     >
-      <n-tab name="setTab1"> 常规 </n-tab>
-      <n-tab name="setTab2"> 系统 </n-tab>
-      <n-tab name="setTab3"> 播放 </n-tab>
-      <n-tab name="setTab4"> 歌词 </n-tab>
-      <n-tab name="setTab5"> 下载 </n-tab>
-      <n-tab name="setTab6"> 其他 </n-tab>
+      <n-tab name="setTab1"> 常规</n-tab>
+      <n-tab name="setTab2"> 系统</n-tab>
+      <n-tab name="setTab3"> 播放</n-tab>
+      <n-tab name="setTab4"> 歌词</n-tab>
+      <n-tab name="setTab5"> 下载</n-tab>
+      <n-tab name="setTab6"> 其他</n-tab>
+      <n-tab name="setTab7"> 插件</n-tab>
     </n-tabs>
     <!-- 设置项 -->
     <n-scrollbar
@@ -38,14 +39,22 @@
     >
       <!-- 常规 -->
       <div class="set-type">
-        <n-h3 prefix="bar"> 常规 </n-h3>
+        <n-h3 prefix="bar"> 常规</n-h3>
         <n-card class="set-item">
-            <div class="name">如果您喜欢我们的服务，可以对我们进行赞赏！<n-text class="tip">我们承诺，TuneFree永久免费，不会接取广告或进行收费！</n-text></div>
+          <div class="name">
+            如果您喜欢我们的服务，可以对我们进行赞赏！
+            <n-text class="tip">我们承诺，TuneFree永久免费，不会接取广告或进行收费！</n-text>
+          </div>
 
-            <div class="donate-link">
-                <a href="https://afdian.net/a/sayqz" target="_blank"><img width="200" src="https://pic1.afdiancdn.com/static/img/welcome/button-sponsorme.png" alt=""></a >
-            </div>
-          </n-card>
+          <div class="donate-link">
+            <a href="https://afdian.net/a/sayqz" target="_blank"
+              ><img
+                width="200"
+                src="https://pic1.afdiancdn.com/static/img/welcome/button-sponsorme.png"
+                alt=""
+            /></a>
+          </div>
+        </n-card>
 
         <n-card class="set-item">
           <div class="name">明暗模式</div>
@@ -170,7 +179,7 @@
       </div>
       <!-- 系统 -->
       <div v-if="checkPlatform.electron()" class="set-type">
-        <n-h3 prefix="bar"> 系统 </n-h3>
+        <n-h3 prefix="bar"> 系统</n-h3>
         <n-card class="set-item">
           <div class="name">关闭软件时</div>
           <n-select
@@ -203,14 +212,14 @@
         </n-card>
       </div>
       <div v-else class="set-type">
-        <n-h3 prefix="bar"> 系统 </n-h3>
+        <n-h3 prefix="bar"> 系统</n-h3>
         <n-card class="set-item">
           <div class="name">该设置项为桌面端独占功能</div>
         </n-card>
       </div>
       <!-- 播放 -->
       <div class="set-type">
-        <n-h3 prefix="bar"> 播放 </n-h3>
+        <n-h3 prefix="bar"> 播放</n-h3>
         <n-card class="set-item">
           <div class="name">
             启动时自动播放
@@ -223,14 +232,14 @@
         <n-card class="set-item">
           <div class="name">
             记忆上次播放位置
-            <n-text v-if="autoPlay" class="tip"> 与自动播放相冲突，已禁用 </n-text>
+            <n-text v-if="autoPlay" class="tip"> 与自动播放相冲突，已禁用</n-text>
           </div>
           <n-switch v-model:value="memorySeek" :disabled="autoPlay" :round="false" />
         </n-card>
         <n-card class="set-item">
           <div class="name">
             音乐资源自动缓存
-            <n-text class="tip"> 可能会造成加载缓慢，将在下一首播放或刷新时生效 </n-text>
+            <n-text class="tip"> 可能会造成加载缓慢，将在下一首播放或刷新时生效</n-text>
           </div>
           <n-switch v-model:value="useMusicCache" :round="false" />
         </n-card>
@@ -270,7 +279,7 @@
         <n-card class="set-item">
           <div class="name">
             播放器样式
-            <n-text class="tip"> 播放器左侧区域样式 </n-text>
+            <n-text class="tip"> 播放器左侧区域样式</n-text>
           </div>
           <n-select
             v-model:value="playCoverType"
@@ -365,7 +374,7 @@
       </div>
       <!-- 歌词 -->
       <div class="set-type">
-        <n-h3 prefix="bar"> 歌词 </n-h3>
+        <n-h3 prefix="bar"> 歌词</n-h3>
         <n-card
           class="set-item"
           :content-style="{
@@ -501,7 +510,7 @@
       </div>
       <!-- 下载 -->
       <div class="set-type">
-        <n-h3 prefix="bar"> 下载 </n-h3>
+        <n-h3 prefix="bar"> 下载</n-h3>
         <n-card class="set-item">
           <div class="name">
             默认下载文件夹
@@ -519,7 +528,12 @@
                 清除
               </n-button>
             </Transition>
-            <n-button :disabled="!checkPlatform.electron()" strong secondary @click="choosePath">
+            <n-button
+              :disabled="!checkPlatform.electron()"
+              strong
+              secondary
+              @click="choosePathDownload"
+            >
               更改
             </n-button>
           </n-flex>
@@ -542,15 +556,13 @@
       </div>
       <!-- 其他 -->
       <div class="set-type">
-        <n-h3 prefix="bar"> 其他 </n-h3>
-          <n-card class="set-item">
-            <div class="name">TuneFree当前版本：{{ packageJson.version }}</div>
-            <div class="donate-link">
-              <n-button type="info" @click="toUpdate">
-                检查更新
-              </n-button>
-            </div>
-          </n-card>
+        <n-h3 prefix="bar"> 其他</n-h3>
+        <n-card class="set-item">
+          <div class="name">TuneFree当前版本：{{ packageJson.version }}</div>
+          <div class="donate-link">
+            <n-button type="info" @click="toUpdate"> 检查更新</n-button>
+          </div>
+        </n-card>
         <n-card class="set-item">
           <div class="name">显示 官网跳转 按钮</div>
           <n-switch v-model:value="showGithub" :round="false" />
@@ -585,7 +597,63 @@
             程序重置
             <n-text class="tip">若程序显示异常或出现问题时可尝试此操作</n-text>
           </div>
-          <n-button strong secondary type="error" @click="resetApp"> 重置 </n-button>
+          <n-button strong secondary type="error" @click="resetApp"> 重置</n-button>
+        </n-card>
+      </div>
+      <!--- 插件 --->
+      <div class="set-type">
+        <n-h3 prefix="bar"> 插件</n-h3>
+        <n-card class="set-item">
+          <div class="name">
+            加载插件
+            <n-text class="tip">为TuneFree注入开源力量！</n-text>
+          </div>
+          <div v-if="checkPlatform.electron()">
+            <n-switch
+              v-model:value="loadPlugins"
+              :round="false"
+              @change="loadPluginsChange = !loadPluginsChange"
+            />
+          </div>
+          <div v-else>
+            <n-switch
+              v-model:value="usePlugins"
+              :round="false"
+              :disabled="!loadPlugins"
+              @change="loadPluginsChange = !loadPluginsChange"
+            />
+          </div>
+        </n-card>
+        <n-card v-if="loadPluginsChange" class="set-item">
+          <div class="name">重启以应用更改</div>
+          <n-button strong secondary @click="reload"> 重启</n-button>
+        </n-card>
+        <n-card class="set-item">
+          <div class="name">
+            默认插件文件夹
+            <n-text class="tip">{{ pluginsPath || "不设置则会每次选择保存位置" }}</n-text>
+          </div>
+          <n-flex>
+            <Transition name="fade" mode="out-in">
+              <n-button
+                v-if="pluginsPath"
+                type="error"
+                strong
+                secondary
+                @click="pluginsPath = null"
+              >
+                清除
+              </n-button>
+            </Transition>
+            <n-button
+              :disabled="!checkPlatform.electron()"
+              strong
+              secondary
+              @click="choosePathPlugins"
+            >
+              更改
+            </n-button>
+          </n-flex>
         </n-card>
       </div>
     </n-scrollbar>
@@ -594,12 +662,13 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import axios from 'axios';
+import axios from "axios";
 import { useOsTheme } from "naive-ui";
 import { siteSettings, siteStatus, musicData } from "@/stores";
 import { checkPlatform } from "@/utils/helper";
 import debounce from "@/utils/debounce";
 import packageJson from "@/../package.json";
+
 const music = musicData();
 const status = siteStatus();
 const settings = siteSettings();
@@ -645,13 +714,17 @@ const {
   downloadMeta,
   downloadCover,
   downloadLyrics,
+  pluginsPath,
+  loadPlugins,
+  usePlugins,
 } = storeToRefs(settings);
-
 
 // 标签页数据
 const setTabsRef = ref(null);
 const setScrollRef = ref(null);
 const setTabsValue = ref("setTab1");
+
+const loadPluginsChange = ref(false);
 
 //更新
 const isNewVersion = (currentVersion, newVersion) => {
@@ -659,13 +732,14 @@ const isNewVersion = (currentVersion, newVersion) => {
   return newVersion.localeCompare(currentVersion) === 1;
 };
 const toUpdate = () => {
-  axios.get('https://api.tunefree.fun/update/')
-    .then(response => {
+  axios
+    .get("https://api.tunefree.fun/update/")
+    .then((response) => {
       const newVersion = response.newVersion;
       const downloadUrl = response.downloadUrl;
       const currentVersion = packageJson.version; // 这里应用当前的版本号，或者通过其他方式获取
-      console.log(packageJson.version)
-      console.log(666)
+      console.log(packageJson.version);
+      console.log(666);
       if (isNewVersion(currentVersion, newVersion)) {
         $dialog.info({
           title: "TuneFree发布更新啦！🎉",
@@ -673,16 +747,16 @@ const toUpdate = () => {
           positiveText: "即刻升级",
           negativeText: "下次再说",
           onPositiveClick: () => {
-            window.open(downloadUrl, '_blank');
-          }
+            window.open(downloadUrl, "_blank");
+          },
         });
       } else {
-        $message.success('您当前的音乐体验已经是最高级了，无需升级。');
+        $message.success("您当前的音乐体验已经是最高级了，无需升级。");
       }
     })
-    .catch(error => {
-      console.error('更新乐章加载失败：', error);
-      $message.error('更新检测出小调，请稍后重试。');
+    .catch((error) => {
+      console.error("更新乐章加载失败：", error);
+      $message.error("更新检测出小调，请稍后重试。");
     });
 };
 
@@ -716,7 +790,7 @@ const songLevelData = {
     tip: "环绕声体验，声音听感增强，96kHz/24bit",
     value: "hires",
   },
-  jymaster: { 
+  jymaster: {
     label: "超清母带 Master",
     tip: "还原音频细节，192kHz/24bit",
     value: "jymaster",
@@ -759,9 +833,24 @@ const closeTaskbarProgress = (val) => {
 };
 
 // 更改下载目录
-const choosePath = async () => {
+const choosePathDownload = async () => {
   const selectedDir = await electron.ipcRenderer.invoke("selectDir", true);
   if (selectedDir) downloadPath.value = selectedDir;
+};
+
+const choosePathPlugins = async () => {
+  const selectedDir = await electron.ipcRenderer.invoke("selectDir", true);
+  if (selectedDir) pluginsPath.value = selectedDir;
+};
+
+const reload = async () => {
+  setTimeout(() => {
+    if (checkPlatform.electron()) {
+      electron.ipcRenderer.send("window-relaunch");
+    } else {
+      window.location.href = "/";
+    }
+  }, 1000);
 };
 
 // 跳转
@@ -792,12 +881,24 @@ const resetApp = () => {
     },
   });
 };
+
+onMounted(() => {
+  let tab = window.location.hash.split("#");
+  if (tab.length === 3) {
+    settingTabChange(tab[2]);
+  }
+});
+
+window.pluginsEventBus.on("changeTab", (event) => {
+  settingTabChange(event.tabName);
+});
 </script>
 
 <style lang="scss" scoped>
 .setting {
   max-width: 1200px;
   margin: 0 auto;
+
   .title {
     display: flex;
     flex-direction: row;
@@ -806,6 +907,7 @@ const resetApp = () => {
     margin: 20px 0;
     font-size: 36px;
     font-weight: bold;
+
     .copyright {
       display: flex;
       flex-direction: row;
@@ -815,9 +917,11 @@ const resetApp = () => {
       font-size: 16px;
       font-weight: normal;
       cursor: pointer;
+
       .author {
         display: flex;
         align-items: center;
+
         &::after {
           content: "/";
           transform: translateY(2px);
@@ -825,10 +929,12 @@ const resetApp = () => {
           margin: 0 6px;
           opacity: 0.6;
         }
+
         .author-text {
           margin-left: 6px;
         }
       }
+
       .version {
         &::before {
           content: "v";
@@ -837,42 +943,52 @@ const resetApp = () => {
       }
     }
   }
+
   .n-tabs {
     height: 42px;
   }
+
   .set-type {
     padding-top: 30px;
+
     .set-item {
       width: 100%;
       border-radius: 8px;
       margin-bottom: 12px;
+
       &:last-child {
         margin-bottom: 0;
       }
+
       :deep(.n-card__content) {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
       }
+
       .name {
         font-size: 16px;
         display: flex;
         flex-direction: column;
         padding-right: 20px;
+
         .dev {
           display: flex;
           flex-direction: row;
           align-items: center;
+
           .n-tag {
             margin-left: 6px;
           }
         }
+
         .tip {
           font-size: 12px;
           opacity: 0.8;
         }
       }
+
       .set {
         width: 200px;
         @media (max-width: 768px) {
@@ -882,6 +998,7 @@ const resetApp = () => {
       }
     }
   }
+
   &.use-cover {
     .n-switch {
       &.n-switch--active {

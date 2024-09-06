@@ -16,26 +16,24 @@ const mainIpcMain = (
   win,
   { showLyricWin, hideLyricWin, lyricDragStart, lyricDragMoving, lyricLock, lyricUnlock },
 ) => {
-
-  
   ipcMain.on("lyric-lock", () => {
-    lyricLock()
-  })
+    lyricLock();
+  });
   ipcMain.on("lyric-unlock", () => {
-    lyricUnlock()
-  })
+    lyricUnlock();
+  });
   ipcMain.on("lyric-show", () => {
-    showLyricWin()
-  })
+    showLyricWin();
+  });
   ipcMain.on("lyric-hide", () => {
-    hideLyricWin()
-  })
-  ipcMain.on('lyric-drag-start', (ev) => {
-    lyricDragStart(ev)
-  })
-  ipcMain.on('lyric-drag-moving', (ev, params) => {
-    lyricDragMoving(ev, params)
-  })
+    hideLyricWin();
+  });
+  ipcMain.on("lyric-drag-start", (ev) => {
+    lyricDragStart(ev);
+  });
+  ipcMain.on("lyric-drag-moving", (ev, params) => {
+    lyricDragMoving(ev, params);
+  });
   // 窗口操作部分
   ipcMain.on("window-min", (ev) => {
     // 阻止最小化
@@ -73,8 +71,6 @@ const mainIpcMain = (
     }
     win.setProgressBar(val / 100);
   });
-
-
 
   // 解灰
   ipcMain.handle("getMusicNumUrl", async (_, data) => {
@@ -246,14 +242,14 @@ const mainIpcMain = (
       if (fs.access(path)) {
         console.info("开始下载：", name, url);
         // 下载歌曲
-        const songDownload = await download(win, url, {
+        const songDownload = await download(this.win, url, {
           directory: path,
           filename: `${name}.${type}`,
         });
         // 若关闭，则不进行元信息写入
         if (!downloadMeta) return true;
         // 下载封面
-        const coverDownload = await download(win, data.cover, {
+        const coverDownload = await download(this.win, data.cover, {
           directory: path,
           filename: `${name}.jpg`,
         });
@@ -289,9 +285,10 @@ const mainIpcMain = (
       return false;
     }
   });
+  ipcMain.on("loadPlugins", async (_, data) => {});
 };
 
-/**
+/**A
  * 从 Bilibili 视频中获取文件的 Base64 数据
  *
  * @param {string} url - 要获取的文件的 URL
