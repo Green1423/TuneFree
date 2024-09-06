@@ -42,7 +42,9 @@
     "express-http-proxy": "^2.0.0",
     "howler": "^2.2.4",
     "js-cookie": "^3.0.5",
+    "jszip": "3.10.1",
     "localforage": "^1.10.0",
+    "mitt": "3.0.1",
     "music-metadata": "7.14.0",
     "node-taglib-sharp": "^5.2.3",
     "pinia": "^2.1.7",
@@ -51,7 +53,7 @@
     "screenfull": "^6.0.2",
     "vue-router": "^4.2.5",
     "vue-slider-component": "4.1.0-beta.7",
-    "jszip": "3.10.1"
+    "sqlite3": "5.1.7"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^1.0.2",
@@ -65,6 +67,8 @@
     "electron-vite": "^2.0.0",
     "eslint": "^8.56.0",
     "eslint-plugin-vue": "^9.20.1",
+    "jszip": "3.10.1",
+    "mitt": "3.0.1",
     "naive-ui": "^2.37.3",
     "prettier": "^3.2.4",
     "sass": "^1.70.0",
@@ -74,7 +78,6 @@
     "vite": "^5.0.12",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-pwa": "^0.17.4",
-    "vue": "3.4.8",
-    "jszip": "3.10.1"
+    "vue": "3.4.8"
   }
 }

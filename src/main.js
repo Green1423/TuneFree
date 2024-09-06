@@ -5,11 +5,10 @@ import App from "@/App.vue";
 import router from "@/router";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import packageJson from "@/../package.json";
-
 // 全局样式
 import "@/style/main.scss";
 import "@/style/animate.scss";
-
+import mitt from "mitt";
 // 是否为 Electron
 const isElectron = checkPlatform.electron();
 
@@ -21,7 +20,7 @@ linkElement.href = isElectron
   : "https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css";
 document.head.appendChild(linkElement);
 document.body.classList.add(isElectron ? "electron" : null);
-
+window.pluginsEventBus = mitt();
 // 程序重置
 window.$cleanAll = (tip = true) => {
   if (tip) {

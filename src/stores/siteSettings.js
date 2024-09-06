@@ -55,6 +55,7 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       downloadCoverToFile: true,
       loadPlugins: true,
       pluginsPath: null,
+      usePlugins: true,
     };
   },
   getters: {},

@@ -87,13 +87,12 @@ import { siteStatus, siteSettings } from "@/stores";
 import { checkPlatform } from "@/utils/helper";
 import { useRouter } from "vue-router";
 import Menu from "@/components/Global/Menu";
-import packageJson from "@/../package.json";
 
 const router = useRouter();
 const status = siteStatus();
 const settings = siteSettings();
 const { asideMenuCollapsed, searchInputFocus } = storeToRefs(status);
-const { showGithub, showSider, themeAutoCover } = storeToRefs(settings);
+const { showGithub, showSider } = storeToRefs(settings);
 
 // 站点信息
 const siteName = import.meta.env.RENDERER_VITE_SITE_TITLE;

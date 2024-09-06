@@ -28,7 +28,14 @@ const music = musicData();
 const status = siteStatus();
 const settings = siteSettings();
 const { showPlayBar } = storeToRefs(status);
-const { showSider } = storeToRefs(settings);
+const { showSider, loadPlugins, pluginsPath } = storeToRefs(settings);
+
+onMounted(async () => {
+  if (loadPlugins.value) {
+    await electron.ipcRenderer.send("loadPlugins", { pluginsPath: pluginsPath.value });
+    //alert("yes");
+  }
+});
 </script>
 
 <style lang="scss" scoped>

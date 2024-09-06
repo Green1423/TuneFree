@@ -49,6 +49,7 @@ const useSiteDataStore = defineStore("siteData", {
         catList: [], // 普通分类
         hqCatList: [], // 精品分类
       },
+      downloadFileList: {},
     };
   },
   getters: {

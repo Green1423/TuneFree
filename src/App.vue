@@ -114,6 +114,7 @@ const annTitle = import.meta.env.RENDERER_VITE_ANN_TITLE;
 const annContene = import.meta.env.RENDERER_VITE_ANN_CONTENT;
 const annDuration = Number(import.meta.env.RENDERER_VITE_ANN_DURATION);
 
+
 // PWA
 if ("serviceWorker" in navigator) {
   // 更新完成提醒
